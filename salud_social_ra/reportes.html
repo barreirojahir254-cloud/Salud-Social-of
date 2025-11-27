@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes de progreso - Salud Social</title>
+    <link rel="stylesheet" href="estilos/reportes.css">
+</head>
+
+<body>
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="iniciar_sesion.html">Iniciar Sesión</a>
+    </nav>
+
+    <header>
+        <img src="imagenes/logoSALUDSOCIAL.png" alt="Logo Salud Social">
+        <h1>Reportes y progreso visual</h1>
+        <p>Tan lejos como tan cerca de un gran cambio.</p>
+    </header>
+
+    <main class="contenedor">
+        <section class="progreso">
+            <h2>Mi progreso general</h2>
+            <div class="indicadores" id="indicadores">
+                <!-- Se llenará dinámicamente -->
+            </div>
+        </section>
+            </div>
+        </section>
+
+        <section class="graficas">
+            <h2>Gráficas de progreso</h2>
+            <div class="contenedor-graficas" id="contenedorGraficas">
+                <!-- Se llenará dinámicamente -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Salud Social - Todos los derechos reservados</p>
+    </footer>
+
+    <script src="js/auth.js"></script>
+    <script>
+        window.addEventListener('load', function() {
+            verificarAutenticacion();
+            crearNavegacionCompleta();
+            generarReportes();
+        });
+
+        function generarReportes() {
+            const usuarioActual = obtenerUsuarioActual();
+            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const usuario = usuarios.find(u => u.id === usuarioActual.usuarioId);
+
+            if (!usuario) return;
+
+            // Generar indicadores
+            const indicadores = document.getElementById('indicadores');
+            indicadores.innerHTML = '';
+
+            const metas = usuario.metas || {};
+            const habitos = usuario.habitos || [];
+
+            // Calcular estadísticas
+            let diasConEjercicio = 0;
+            let totalAgua = 0;
+            let totalHoras = 0;
+
+            habitos.forEach(h => {
+                if (h.ejercicio && h.ejercicio.trim()) diasConEjercicio++;
+                if (h.agua) totalAgua++;
+                if (h.sueno) totalHoras += parseInt(h.sueno);
+            });
+
+            // Mostrar indicadores
+            const indicadorHTML = `
+                <div class="indicador">
+                    <h3>🏋️ Ejercicio</h3>
+                    <div class="barra">
+                        <div class="relleno" style="width: ${Math.min((diasConEjercicio / 7) * 100, 100)}%; background-color: #ff9800;"></div>
+                    </div>
+                    <p>${diasConEjercicio} de 7 días con ejercicio</p>
+                </div>
+
+                <div class="indicador">
+                    <h3>💧 Hidratación</h3>
+                    <div class="barra">
+                        <div class="relleno" style="width: ${Math.min((totalAgua / 7) * 100, 100)}%;"></div>
+                    </div>
+                    <p>${totalAgua} de 7 días registrados</p>
+                </div>
+
+                <div class="indicador">
+                    <h3>🌙 Sueño</h3>
+                    <div class="barra">
+                        <div class="relleno" style="width: ${habitos.length > 0 ? Math.min(((totalHoras / habitos.length) / 8) * 100, 100) : 0}%; background-color: #8bc34a;"></div>
+                    </div>
+                    <p>${habitos.length > 0 ? (totalHoras / habitos.length).toFixed(1) : 0} horas promedio</p>
+                </div>
+
+                <div class="indicador">
+                    <h3>📊 Registros totales</h3>
+                    <div class="barra">
+                        <div class="relleno" style="width: ${habitos.length > 0 ? Math.min((habitos.length / 30) * 100, 100) : 0}%; background-color: #2196f3;"></div>
+                    </div>
+                    <p>${habitos.length} registros completados</p>
+                </div>
+            `;
+
+            indicadores.innerHTML = indicadorHTML;
+
+            // Información en el contenedor de gráficas
+            const contenedor = document.getElementById('contenedorGraficas');
+            contenedor.innerHTML = `
+                <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    <h3 style="color: #007acc; margin-bottom: 20px;">📈 Resumen de tu actividad</h3>
+                    <p><strong>Total de registros:</strong> ${habitos.length}</p>
+                    <p><strong>Días activos:</strong> ${new Set(habitos.map(h => new Date(h.fecha).toLocaleDateString())).size}</p>
+                    <p><strong>Meta de ejercicio:</strong> ${metas.ejercicio || 'No establecida'} minutos</p>
+                    <p><strong>Meta de agua:</strong> ${metas.agua || 'No establecida'} litros</p>
+                    <p><strong>Meta de sueño:</strong> ${metas.suenio || 'No establecida'} horas</p>
+                    
+                    <div style="margin-top: 20px; padding: 20px; background: #f0f8ff; border-radius: 8px; border-left: 4px solid #007acc;">
+                        <h4 style="color: #007acc; margin-top: 0;">💡 Consejo</h4>
+                        <p>Mantén la consistencia en tus registros para ver un progreso real. Cada día que registres te acerca más a tus metas de bienestar.</p>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+
+</body>
+</html>

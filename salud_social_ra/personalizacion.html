@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalización</title>
+    <link rel="stylesheet" href="estilos/personalizacion.css">
+    <style>
+        .mensaje {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid;
+            display: none;
+        }
+
+        .mensaje.exito {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #28a745;
+        }
+
+        .mensaje.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #dc3545;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="iniciar_sesion.html">Iniciar Sesión</a>
+    </nav>
+
+    <header>
+        <img src="imagenes/logoSALUDSOCIAL.png" alt="Logo Salud Social">
+        <h1>Personalización</h1>
+        <p>Las sueños de unos, son las metas de todos.</p>
+    </header>
+
+    <main class="contenedor">
+        <!-- SECCIÓN DE METAS PERSONALES -->
+        <section class="metas">
+            <h2>Configura tus metas personales</h2>
+            <p>Establece objetivos saludables que te motiven cada día.</p>
+            <div id="mensajeMetas" class="mensaje"></div>
+            <form id="formMetas" onsubmit="guardarMetas(event)">
+                <label for="meta-ejercicio">Meta de ejercicio (minutos por día):</label>
+                <input type="number" id="meta-ejercicio" name="meta-ejercicio" min="0" max="300">
+
+                <label for="meta-agua">Meta de agua (litros por día):</label>
+                <input type="number" id="meta-agua" name="meta-agua" min="0" max="5" step="0.1">
+
+                <label for="meta-suenio">Horas de sueño diarias:</label>
+                <input type="number" id="meta-suenio" name="meta-suenio" min="0" max="12">
+
+                <button type="submit">Guardar metas</button>
+            </form>
+        </section>
+
+        <!-- SECCIÓN DE AJUSTE DE PERFIL -->
+        <section class="perfil">
+            <h2>Ajusta tu perfil</h2>
+            <p>Actualiza tus datos personales y preferencias.</p>
+            <div id="mensajePerfil" class="mensaje"></div>
+            <form id="formPerfil" onsubmit="guardarPerfil(event)">
+                <label for="nombre">Nombre completo:</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Tu nombre completo">
+
+                <label for="edad">Edad:</label>
+                <input type="number" id="edad" name="edad" min="1" max="120">
+
+                <label for="ciudad">Ciudad:</label>
+                <input type="text" id="ciudad" name="ciudad" placeholder="Tu ciudad">
+
+                <label for="telefono">Teléfono:</label>
+                <input type="tel" id="telefono" name="telefono" placeholder="Tu teléfono">
+
+                <label for="intereses">Intereses de salud:</label>
+                <textarea id="intereses" name="intereses" placeholder="Ejemplo: alimentación balanceada, meditación..."></textarea>
+
+                <button type="submit">Actualizar perfil</button>
+            </form>
+        </section>
+
+        <!-- SECCIÓN DE HISTORIAL -->
+        <section class="historial">
+            <h2>Tu evolución en la salud</h2>
+            <p>Visualiza tu progreso a lo largo del tiempo.</p>
+            <div class="linea-tiempo" id="lineaTiempo">
+                <!-- Se llenará dinámicamente -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2025 Salud Social - Todos los derechos reservados.
+    </footer>
+
+    <script src="js/auth.js"></script>
+    <script>
+        // Verificar autenticación
+        window.addEventListener('load', function() {
+            verificarAutenticacion();
+            crearNavegacionCompleta();
+            cargarDatosPerfil();
+            cargarHistorial();
+        });
+
+        function cargarDatosPerfil() {
+            const usuarioActual = obtenerUsuarioActual();
+            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const usuario = usuarios.find(u => u.id === usuarioActual.usuarioId);
+
+            if (usuario) {
+                document.getElementById('nombre').value = usuario.nombreCompleto || usuario.nombre || '';
+                document.getElementById('edad').value = usuario.edad || '';
+                document.getElementById('ciudad').value = usuario.ciudad || '';
+                document.getElementById('telefono').value = usuario.telefono || '';
+                document.getElementById('intereses').value = usuario.intereses || '';
+
+                // Cargar metas
+                if (usuario.metas) {
+                    document.getElementById('meta-ejercicio').value = usuario.metas.ejercicio || '';
+                    document.getElementById('meta-agua').value = usuario.metas.agua || '';
+                    document.getElementById('meta-suenio').value = usuario.metas.suenio || '';
+                }
+            }
+        }
+
+        function guardarMetas(event) {
+            event.preventDefault();
+
+            const usuarioActual = obtenerUsuarioActual();
+            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const usuarioIndex = usuarios.findIndex(u => u.id === usuarioActual.usuarioId);
+
+            if (usuarioIndex === -1) return;
+
+            usuarios[usuarioIndex].metas = {
+                ejercicio: document.getElementById('meta-ejercicio').value || 0,
+                agua: document.getElementById('meta-agua').value || 0,
+                suenio: document.getElementById('meta-suenio').value || 0,
+                fecha: new Date().toISOString()
+            };
+
+            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+            // Mostrar mensaje
+            const mensaje = document.getElementById('mensajeMetas');
+            mensaje.className = 'mensaje exito';
+            mensaje.textContent = '✓ Metas guardadas correctamente';
+            mensaje.style.display = 'block';
+
+            // Agregar a historial
+            agregarEvento(`Actualizaste tus metas: ${document.getElementById('meta-ejercicio').value} min ejercicio, ${document.getElementById('meta-agua').value} L agua, ${document.getElementById('meta-suenio').value} h sueño`);
+
+            setTimeout(() => {
+                mensaje.style.display = 'none';
+            }, 3000);
+        }
+
+        function guardarPerfil(event) {
+            event.preventDefault();
+
+            const usuarioActual = obtenerUsuarioActual();
+            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const usuarioIndex = usuarios.findIndex(u => u.id === usuarioActual.usuarioId);
+
+            if (usuarioIndex === -1) return;
+
+            usuarios[usuarioIndex].nombreCompleto = document.getElementById('nombre').value;
+            usuarios[usuarioIndex].edad = document.getElementById('edad').value;
+            usuarios[usuarioIndex].ciudad = document.getElementById('ciudad').value;
+            usuarios[usuarioIndex].telefono = document.getElementById('telefono').value;
+            usuarios[usuarioIndex].intereses = document.getElementById('intereses').value;
+
+            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+            // Actualizar sesión
+            usuarioActual.nombre = document.getElementById('nombre').value;
+            localStorage.setItem('sesionActual', JSON.stringify(usuarioActual));
+
+            // Mostrar mensaje
+            const mensaje = document.getElementById('mensajePerfil');
+            mensaje.className = 'mensaje exito';
+            mensaje.textContent = '✓ Perfil actualizado correctamente';
+            mensaje.style.display = 'block';
+
+            // Agregar a historial
+            agregarEvento('Actualizaste tu perfil de usuario');
+
+            setTimeout(() => {
+                mensaje.style.display = 'none';
+            }, 3000);
+        }
+
+        function cargarHistorial() {
+            const usuarioActual = obtenerUsuarioActual();
+            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const usuario = usuarios.find(u => u.id === usuarioActual.usuarioId);
+
+            const lineaTiempo = document.getElementById('lineaTiempo');
+            lineaTiempo.innerHTML = '';
+
+            if (usuario && usuario.historial && usuario.historial.length > 0) {
+                usuario.historial.forEach(evento => {
+                    const eventoDiv = document.createElement('div');
+                    eventoDiv.className = 'evento';
+                    eventoDiv.innerHTML = `
+                        <h3>${evento.titulo}</h3>
+                        <span>${new Date(evento.fecha).toLocaleDateString('es-ES')}</span>
+                        <p>${evento.descripcion}</p>
+                    `;
+                    lineaTiempo.appendChild(eventoDiv);
+                });
+            } else {
+                lineaTiempo.innerHTML = '<p style="text-align: center; color: #999;">Aún no hay eventos en tu historial.</p>';
+            }
+        }
+
+        function agregarEvento(descripcion) {
+            const usuarioActual = obtenerUsuarioActual();
+            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const usuarioIndex = usuarios.findIndex(u => u.id === usuarioActual.usuarioId);
+
+            if (usuarioIndex === -1) return;
+
+            if (!usuarios[usuarioIndex].historial) {
+                usuarios[usuarioIndex].historial = [];
+            }
+
+            usuarios[usuarioIndex].historial.push({
+                titulo: 'Actualización de perfil',
+                descripcion: descripcion,
+                fecha: new Date().toISOString()
+            });
+
+            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+            cargarHistorial();
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,188 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f7f9fc;
+    color: #333;
+    line-height: 1.7;
+}
+
+/* === MENÚ SUPERIOR === */
+nav {
+    background-color: #007acc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 15px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 25px;
+    font-weight: bold;
+    font-size: 1.1em;
+    position: relative;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #cfeeff;
+}
+
+/* === HEADER === */
+header {
+    background-color: #00a2ff;
+    color: white;
+    text-align: center;
+    padding: 50px 20px;
+}
+
+header img {
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+header h1 {
+    font-size: 2.3em;
+}
+
+header p {
+    font-size: 1.1em;
+    margin-top: 10px;
+    opacity: 0.9;
+}
+
+/* ======== Contenedor principal ======== */
+.contenedor {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    gap: 30px;
+}
+
+/* ======== Formulario ======== */
+.formulario {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 350px;
+}
+
+.formulario h2 {
+    color: #388e3c;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: none;
+    height: 70px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 15px;
+    width: 100%;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #43a047;
+}
+
+/* ======== Lista de recordatorios ======== */
+.lista {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 350px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.lista h2 {
+    color: #388e3c;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.lista ul {
+    list-style: none;
+    padding: 0;
+}
+
+.lista li {
+    background-color: #e8f5e9;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    line-height: 1.4em;
+}
+
+.lista li button {
+    background-color: #e53935;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+
+.lista li button:hover {
+    background-color: #c62828;
+}
+
+/* ======== Pie de página ======== */
+footer {
+    background-color: #007acc;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    margin-top: 30px;
+}
+
+/* ======== Responsividad ======== */
+@media (max-width: 768px) {
+    .contenedor {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .formulario,
+    .lista {
+        width: 90%;
+    }
+}

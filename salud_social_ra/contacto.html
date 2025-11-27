@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Salud Social</title>
+    <link rel="icon" type="image/png" href="img/logoSALUDSOCIAL.png">
+    <!--Hoja de estilos-->
+    <link rel="stylesheet" href="estilos/contacto.css">
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="iniciar_sesion.html">Iniciar Sesión</a>
+    </nav>
+
+    <header>
+        <img src="imagenes/logoSALUDSOCIAL.png" alt="Logo Salud Social"> 
+        <span>Contáctanos - "Juntos por una vida más saludable"</span>
+    </header>
+
+    <section class="container">
+        <h2>Formulario de Contacto</h2>
+
+        <form action="#" method="post">
+            <label for="nombre">Nombre completo:</label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <label for="correo">Correo electrónico:</label>
+            <input type="email" id="correo" name="correo" required>
+
+            <label for="asunto">Asunto:</label>
+            <input type="text" id="asunto" name="asunto">
+
+            <label for="mensaje">Mensaje:</label>
+            <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+
+            <button type="submit">Enviar mensaje</button>
+        </form>
+
+        <h2>Información de Contacto</h2>
+
+        <div class="bloque">
+            <img src="imagenes/soporte.jpg" alt="Soporte técnico">
+            <div class="contenido">
+                <h3>Soporte y ayuda</h3>
+                <p>¿Tienes dudas o problemas con la aplicación? Nuestro equipo de soporte técnico está disponible para ayudarte con cualquier inconveniente o consulta relacionada con el uso de la plataforma.</p>
+            </div>
+        </div>
+
+        <div class="bloque reverse">
+            <img src="imagenes/redes.jpg" alt="Redes Sociales">
+            <div class="contenido">
+                <h3>Conéctate con nosotros</h3>
+                <p>Síguenos en nuestras redes sociales para mantenerte informado sobre actualizaciones, consejos de bienestar y nuevos retos comunitarios.</p>
+            </div>
+        </div>
+
+        <div class="bloque" onclick="window.location.href='personalizacion.html'">
+            <img src="imagenes/oficina.jpg" alt="Oficinas Salud Social">
+            <div class="contenido">
+                <h3>Oficinas y contacto directo</h3>
+                <p>Puedes visitarnos o escribirnos directamente a: <br><b>contacto@saludsocial.com</b> <br> Tel: (55) 1234 5678 <br> Dirección: Av. Bienestar 101, Ciudad Saludable, México.</p>
+            </div>
+        </div>
+
+        <!-- SECCIÓN DE AUTORES -->
+        <div class="autores">
+            <h3>Creadores del Proyecto</h3>
+            <p>
+                Esta página web fue desarrollada por el <b>Técnico en Programación Jahir Azael Barreiro Pérez</b>, estudiante de Ingeniería en la <b>General Mariano Escobedo Technological University</b>, 
+                junto con <b>Cristopher Oziel Pérez Martínez</b>, <b>Eduardo Ezequiel</b> y <b>Luis Orlando Duarte Tolentino</b>, 
+                quienes colaboraron en la creación de este sitio como parte del proyecto de la materia <b>Desarrollo de Aplicaciones Web</b>, 
+                con el propósito de mejorar el día a día de las personas a través de la tecnología y el bienestar digital.
+            </p>
+        </div>
+
+    </section>
+
+    <footer>
+        &copy; 2025 Salud Social - Todos los derechos reservados.
+    </footer>
+
+    <script>
+        const bloques = document.querySelectorAll('.bloque');
+
+        function mostrarBloques() {
+            const scrollY = window.scrollY + window.innerHeight;
+            bloques.forEach(bloque => {
+                const bloqueTop = bloque.offsetTop + 100;
+                if (scrollY > bloqueTop) {
+                    bloque.classList.add('visible');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', mostrarBloques);
+        mostrarBloques();
+    </script>
+
+</body>
+</html>

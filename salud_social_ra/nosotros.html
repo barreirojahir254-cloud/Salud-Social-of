@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nosotros - Salud Social</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        /* === MENÚ SUPERIOR === */
+        nav {
+            background-color: #007acc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 25px;
+            font-weight: bold;
+            font-size: 1.1em;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #cfeeff;
+        }
+
+        /* === HEADER === */
+        header {
+            background-color: #00a2ff;
+            color: white;
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        header img {
+            height: 100px;
+            margin-bottom: 10px;
+        }
+
+        header h1 {
+            font-size: 2.3em;
+        }
+
+        header p {
+            font-size: 1.1em;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+
+        /* === SECCIÓN PRINCIPAL === */
+        .container {
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            color: #007acc;
+            font-size: 2em;
+            margin-bottom: 30px;
+        }
+
+        .bloque {
+            margin-bottom: 40px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .bloque img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+
+        .bloque h3 {
+            color: #00a2ff;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .bloque p {
+            font-size: 1.05em;
+            color: #444;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* === MISIÓN Y VISIÓN === */
+        .mision-vision {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .card {
+            background-color: #f0f8ff;
+            border-left: 5px solid #00a2ff;
+            border-radius: 10px;
+            padding: 30px;
+            flex: 1;
+            min-width: 280px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: #007acc;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .card p {
+            font-size: 1em;
+            color: #333;
+        }
+
+        /* === COMPROMISO === */
+        .compromiso {
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        .compromiso h3 {
+            color: #007acc;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+        }
+
+        .compromiso p {
+            font-size: 1.05em;
+            max-width: 850px;
+            margin: 0 auto;
+            color: #444;
+        }
+
+        footer {
+            background-color: #007acc;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 1.1em;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .mision-vision {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .card {
+                width: 100%;
+                max-width: 500px;
+            }
+
+            header h1 {
+                font-size: 1.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- === MENÚ === -->
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="iniciar_sesion.html">Iniciar Sesión</a>
+    </nav>
+
+    <!-- === ENCABEZADO === -->
+    <header>
+        <img src="imagenes/logoSALUDSOCIAL.png" alt="Logo Salud Social">
+        <h1>Sobre Nosotros</h1>
+        <p>Una comunidad por el bienestar — trabajando juntos por una vida más saludable.</p>
+    </header>
+
+    <!-- === CONTENIDO === -->
+    <section class="container">
+        <div class="bloque">
+            <img src="imagenes/equipo.jpg" alt="Equipo Salud Social">
+            <h3>Una comunidad por el bienestar</h3>
+            <p>Somos un equipo multidisciplinario comprometido con mejorar la salud y el bienestar social mediante la tecnología. Nuestra misión es fomentar hábitos saludables y construir una comunidad que impulse el cambio positivo.</p>
+        </div>
+
+        <div class="mision-vision">
+            <div class="card">
+                <h3>🌱 Misión</h3>
+                <p>Promover el bienestar físico y mental de las personas mediante herramientas digitales accesibles que motiven la adopción de hábitos saludables y la creación de comunidades de apoyo comprometidas con el cambio positivo.</p>
+            </div>
+
+            <div class="card">
+                <h3>🚀 Visión</h3>
+                <p>Convertirnos en una plataforma líder en salud social, reconocida por su impacto positivo en la calidad de vida de las personas y por su innovación tecnológica al servicio del bienestar colectivo.</p>
+            </div>
+        </div>
+
+        <div class="compromiso">
+            <h3>💼 Nuestro Compromiso</h3>
+            <p>En <strong>Salud Social</strong>, creemos en la unión entre ciencia, tecnología y empatía.  
+            Estamos conformados por profesionales de la salud, el desarrollo tecnológico y la comunicación, trabajando con ética y pasión en cada proyecto.  
+            Nuestro compromiso es ofrecer soluciones confiables, seguras y humanas que inspiren un cambio real en la sociedad.</p>
+        </div>
+    </section>
+
+    <!-- === PIE DE PÁGINA === -->
+    <footer>
+        &copy; 2025 Salud Social - Todos los derechos reservados.
+    </footer>
+</body>
+</html>

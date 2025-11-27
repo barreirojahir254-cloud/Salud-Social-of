@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Salud Social</title>
+    <link rel="icon" type="image/png" href="img/logoSALUDSOCIAL.png">
+    <!--Hoja de estilos-->
+    <link rel="stylesheet" href="estilos/index.css">
+</head>
+
+<body>
+    <nav id="navbar">
+        <a href="index.html">Inicio</a>
+        <a href="contacto.html">Contacto</a>
+        <a id="botonAuth" href="iniciar_sesion.html">Iniciar Sesión</a>
+    </nav>
+
+    <header>
+        <img src="imagenes/logoSALUDSOCIAL.png" alt="Logo Salud Social"> 
+        <span>"Pequeños hábitos, grandes cambios"</span>
+    </header>
+
+    <section class="container">
+        <h2>¿Quiénes somos?</h2>
+
+        <div class="bloque" onclick="window.location.href='nosotros.html'">
+            <img src="imagenes/gimnasios-fase-3-deporte-grupo.jpg" alt="Equipo Salud Social" >
+            <div class="contenido">
+                <h3>Una comunidad por el bienestar</h3>
+                <p>Somos un equipo multidisciplinario comprometido con mejorar la salud y el bienestar social mediante la tecnología. Nuestra misión es fomentar hábitos saludables y construir una comunidad que impulse el cambio positivo.</p>
+            </div>
+        </div>
+
+        <div class="bloque reverse" onclick="window.location.href='habitos_saludables.html'">
+            <img src="imagenes/habitos.jpg" alt="Hábitos saludables">
+            <div class="contenido">
+                <h3>Promovemos hábitos saludables</h3>
+                <p>Facilitamos el registro diario de actividades esenciales como la alimentación, el ejercicio, la hidratación y el sueño, ayudando a mantener un equilibrio físico y mental sostenible.</p>
+            </div>
+        </div>
+
+        <div class="bloque" onclick="window.location.href='recordatorios.html'">
+            <img src="imagenes/5246295.png" alt="Recordatorios personalizados">
+            <div class="contenido">
+                <h3>Recordatorios inteligentes</h3>
+                <p>Te mantenemos enfocado en tus metas con notificaciones personalizadas y alarmas configurables, para que cada hábito positivo se convierta en una parte natural de tu día.</p>
+            </div>
+        </div>
+
+        <div class="bloque reverse" onclick="window.location.href='reportes.html'">
+            <img src="imagenes/mostrando-el-progreso-en-aumento-de-masa-muscular-en-semanas-resultados-de-habitos-saludables-clinica-de-fitness-1024x684.webp" alt="Reportes y estadísticas">
+            <div class="contenido">
+                <h3>Reportes y progreso visual</h3>
+                <p>Visualiza tu evolución con reportes semanales y gráficos interactivos. Mide tus avances y comprende mejor tus patrones de bienestar.</p>
+            </div>
+        </div>
+
+        <div class="bloque" onclick="window.location.href='comunidad.html'">
+            <img src="imagenes/relaciones_positivas-1-scaled.jpg" alt="Comunidad Salud Social">
+            <div class="contenido">
+                <h3>Interacción social</h3>
+                <p>Conéctate con otros usuarios mediante retos, rankings y foros. Nuestra red de apoyo te motiva a seguir adelante y compartir tus logros con otros.</p>
+            </div>
+        </div>
+
+        <div class="bloque reverse" onclick="window.location.href='personalizacion.html'">
+            <img src="imagenes/1597172250188.png" alt="Personalización de perfil">
+            <div class="contenido">
+                <h3>Tu espacio personalizado</h3>
+                <p>Configura tus metas personales, ajusta tu perfil y consulta tu historial con una línea del tiempo que muestra tu evolución en salud y bienestar.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2025 Salud Social - Todos los derechos reservados.
+    </footer>
+
+    <script src="js/auth.js"></script>
+    <script>
+        const bloques = document.querySelectorAll('.bloque');
+
+        function mostrarBloques() {
+            const scrollY = window.scrollY + window.innerHeight;
+            bloques.forEach(bloque => {
+                const bloqueTop = bloque.offsetTop + 100;
+                if (scrollY > bloqueTop) {
+                    bloque.classList.add('visible');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', mostrarBloques);
+        mostrarBloques();
+
+        // Actualizar navegación según autenticación
+        function actualizarNavegacion() {
+            const botonAuth = document.getElementById('botonAuth');
+            const usuarioActual = obtenerUsuarioActual();
+
+            if (usuarioActual) {
+                botonAuth.textContent = `👤 ${usuarioActual.nombre} (Cerrar)`;
+                botonAuth.style.marginLeft = 'auto';
+                botonAuth.style.paddingRight = '20px';
+                botonAuth.onclick = function(e) {
+                    e.preventDefault();
+                    if (confirm('¿Deseas cerrar sesión?')) {
+                        cerrarSesion();
+                        location.reload();
+                    }
+                };
+                botonAuth.href = '#';
+            } else {
+                botonAuth.textContent = 'Iniciar Sesión';
+                botonAuth.href = 'iniciar_sesion.html';
+                botonAuth.style.marginLeft = 'auto';
+                botonAuth.style.paddingRight = '20px';
+            }
+        }
+
+        window.addEventListener('load', actualizarNavegacion);
+
+        // Acceso a panel admin con atajo de teclado: Ctrl + Shift + A
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.shiftKey && event.key === 'A') {
+                window.location.href = 'admin.html';
+            }
+        });
+    </script>
+</body>
+</html>

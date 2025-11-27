@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hábitos Saludables - Salud Social</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f8fb;
+            color: #333;
+        }
+
+        /* === MENÚ SUPERIOR === */
+        nav {
+            background-color: #007acc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 25px;
+            font-weight: bold;
+            font-size: 1.1em;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #cfeeff;
+        }
+
+        header {
+            text-align: center;
+            background-color: #00a2ff;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        header img {
+            height: 90px;
+            margin-bottom: 10px;
+        }
+
+        header h1 {
+            font-size: 2.2em;
+        }
+
+        /* === CONTENEDOR === */
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            padding: 40px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #007acc;
+            margin-bottom: 30px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .seccion {
+            border-left: 5px solid #00a2ff;
+            padding-left: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+            color: #333;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #00a2ff;
+            outline: none;
+        }
+
+        button {
+            background-color: #007acc;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #005f99;
+        }
+
+        footer {
+            background-color: #007acc;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 1.1em;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 30px 15px;
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- === MENÚ === -->
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="iniciar_sesion.html">Iniciar Sesión</a>
+    </nav>
+
+    <!-- === ENCABEZADO === -->
+    <header>
+        <img src="imagenes/logoSALUDSOCIAL.png" alt="Logo Salud Social">
+        <h1>Hábitos Saludables</h1>
+        <p>Registra tus actividades diarias para mantener un equilibrio físico y mental sostenible.</p>
+    </header>
+
+    <!-- === FORMULARIO PRINCIPAL === -->
+    <section class="container">
+        <h2>Registro de Actividades</h2>
+
+        <form id="formHabitos" onsubmit="guardarHabito(event)">
+            <!-- Alimentación -->
+            <div class="seccion">
+                <label for="alimentacion">🍎 Alimentación:</label>
+                <textarea id="alimentacion" rows="3" placeholder="Describe tus comidas del día (desayuno, comida, cena, snacks)..."></textarea>
+            </div>
+
+            <!-- Ejercicio -->
+            <div class="seccion">
+                <label for="ejercicio">🏋️ Ejercicio:</label>
+                <input type="text" id="ejercicio" placeholder="Ejemplo: 30 min de caminata o yoga">
+            </div>
+
+            <!-- Hidratación -->
+            <div class="seccion">
+                <label for="agua">💧 Hidratación:</label>
+                <select id="agua">
+                    <option value="">Selecciona cantidad aproximada</option>
+                    <option>Menos de 1 litro</option>
+                    <option>1 - 2 litros</option>
+                    <option>Más de 2 litros</option>
+                </select>
+            </div>
+
+            <!-- Sueño -->
+            <div class="seccion">
+                <label for="sueno">🌙 Sueño:</label>
+                <input type="number" id="sueno" min="0" max="24" placeholder="Horas dormidas">
+            </div>
+
+            <button type="submit">Guardar Registro</button>
+        </form>
+
+        <div id="mensaje" style="margin-top: 20px; padding: 15px; border-radius: 5px; display: none;"></div>
+
+        <!-- Historial de registros -->
+        <h3 style="margin-top: 40px; color: #007acc;">Historial de Registros</h3>
+        <div id="historialHabitos" style="margin-top: 20px;"></div>
+    </section>
+
+    <!-- === PIE DE PÁGINA === -->
+    <footer>
+        &copy; 2025 Salud Social - Todos los derechos reservados.
+    </footer>
+
+    <script src="js/auth.js"></script>
+    <script>
+        // Verificar autenticación
+        window.addEventListener('load', function() {
+            verificarAutenticacion();
+            crearNavegacionCompleta();
+            mostrarHistorial();
+        });
+
+        function guardarHabito(event) {
+            event.preventDefault();
+
+            const usuarioActual = obtenerUsuarioActual();
+            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const usuarioIndex = usuarios.findIndex(u => u.id === usuarioActual.usuarioId);
+
+            if (usuarioIndex === -1) return;
+
+            const registro = {
+                id: Date.now(),
+                alimentacion: document.getElementById("alimentacion").value,
+                ejercicio: document.getElementById("ejercicio").value,
+                agua: document.getElementById("agua").value,
+                sueno: document.getElementById("sueno").value,
+                fecha: new Date().toISOString()
+            };
+
+            if (!usuarios[usuarioIndex].habitos) {
+                usuarios[usuarioIndex].habitos = [];
+            }
+
+            usuarios[usuarioIndex].habitos.push(registro);
+            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+            // Mostrar mensaje
+            const mensaje = document.getElementById('mensaje');
+            mensaje.style.display = 'block';
+            mensaje.style.backgroundColor = '#d4edda';
+            mensaje.style.color = '#155724';
+            mensaje.style.borderLeft = '4px solid #28a745';
+            mensaje.textContent = '✅ Registro guardado correctamente';
+
+            document.getElementById('formHabitos').reset();
+            mostrarHistorial();
+
+            setTimeout(() => {
+                mensaje.style.display = 'none';
+            }, 3000);
+        }
+
+        function mostrarHistorial() {
+            const usuarioActual = obtenerUsuarioActual();
+            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const usuario = usuarios.find(u => u.id === usuarioActual.usuarioId);
+
+            const historial = document.getElementById('historialHabitos');
+            historial.innerHTML = '';
+
+            if (!usuario || !usuario.habitos || usuario.habitos.length === 0) {
+                historial.innerHTML = '<p style="text-align: center; color: #999;">No hay registros aún</p>';
+                return;
+            }
+
+            // Mostrar últimos 10 registros
+            usuario.habitos.slice().reverse().slice(0, 10).forEach(reg => {
+                const div = document.createElement('div');
+                div.style.cssText = 'background: #f9f9f9; padding: 15px; margin: 10px 0; border-radius: 8px; border-left: 4px solid #00a2ff;';
+                div.innerHTML = `
+                    <strong>${new Date(reg.fecha).toLocaleDateString('es-ES')}</strong><br>
+                    🍎 Alimentación: ${reg.alimentacion || 'No registrado'}<br>
+                    🏋️ Ejercicio: ${reg.ejercicio || 'No registrado'}<br>
+                    💧 Agua: ${reg.agua || 'No registrado'}<br>
+                    🌙 Sueño: ${reg.sueno ? reg.sueno + ' horas' : 'No registrado'}
+                `;
+                historial.appendChild(div);
+            });
+        }
+    </script>
+
+</body>
+</html>

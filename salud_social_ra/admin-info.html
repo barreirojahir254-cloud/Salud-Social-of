@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Acceso</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #007acc;
+            margin-bottom: 20px;
+            font-size: 2.2em;
+        }
+
+        .info-box {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #007acc;
+            text-align: left;
+        }
+
+        .info-box h3 {
+            color: #007acc;
+            margin-bottom: 10px;
+        }
+
+        .info-box p {
+            color: #555;
+            line-height: 1.6;
+            margin: 8px 0;
+        }
+
+        .método {
+            background: #fff9e6;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #ff9800;
+        }
+
+        .método h4 {
+            color: #ff9800;
+            margin-bottom: 8px;
+        }
+
+        .código {
+            background: #333;
+            color: #00ff00;
+            padding: 12px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .botones {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background-color: #007acc;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #005f99;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 122, 204, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .paso {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            text-align: left;
+            border-left: 4px solid #28a745;
+        }
+
+        .paso strong {
+            color: #28a745;
+        }
+
+        .warning {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+            text-align: left;
+            color: #856404;
+        }
+
+        footer {
+            margin-top: 30px;
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .icono {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icono">🔐</div>
+        <h1>Panel de Administración</h1>
+        <p style="color: #666; margin-bottom: 20px;">Accede a la consola de administración para gestionar todos los usuarios y datos</p>
+
+        <div class="info-box">
+            <h3>📍 Ubicación de los Datos</h3>
+            <p>Todos los datos se almacenan en <strong>localStorage</strong> del navegador:</p>
+            <div class="código">localStorage.getItem('usuarios')</div>
+            <p>Puedes acceder desde la consola del navegador (F12)</p>
+        </div>
+
+        <div class="método">
+            <h4>Método 1: Atajo de Teclado (Recomendado)</h4>
+            <p>Desde cualquier página del sitio, presiona:</p>
+            <div class="código">Ctrl + Shift + A</div>
+            <p>Serás redirigido automáticamente al panel admin</p>
+        </div>
+
+        <div class="método">
+            <h4>Método 2: URL Directa</h4>
+            <p>Accede directamente a:</p>
+            <div class="código">admin.html</div>
+        </div>
+
+        <div class="warning">
+            ⚠️ <strong>ADVERTENCIA:</strong> Este panel tiene opciones para eliminar usuarios y datos. Úsalo con cuidado.
+        </div>
+
+        <div class="info-box">
+            <h3>✨ Características del Panel</h3>
+            <div class="paso">
+                <strong>✓</strong> Ver todos los usuarios registrados
+            </div>
+            <div class="paso">
+                <strong>✓</strong> Consultar hábitos registrados por usuario
+            </div>
+            <div class="paso">
+                <strong>✓</strong> Administrar recordatorios
+            </div>
+            <div class="paso">
+                <strong>✓</strong> Moderador de publicaciones comunitarias
+            </div>
+            <div class="paso">
+                <strong>✓</strong> Exportar datos a JSON
+            </div>
+            <div class="paso">
+                <strong>✓</strong> Importar datos desde JSON
+            </div>
+            <div class="paso">
+                <strong>✓</strong> Estadísticas en tiempo real
+            </div>
+        </div>
+
+        <div class="botones">
+            <a href="admin.html" class="btn btn-primary">🚀 Ir al Panel Admin</a>
+            <a href="index.html" class="btn btn-secondary">← Volver al Inicio</a>
+        </div>
+
+        <footer>
+            💡 Tip: Prueba presionar Ctrl + Shift + A desde el inicio para acceder rápidamente
+        </footer>
+    </div>
+</body>
+</html>

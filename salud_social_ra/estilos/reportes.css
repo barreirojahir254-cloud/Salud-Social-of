@@ -1,0 +1,167 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f7f9fc;
+    color: #333;
+    line-height: 1.7;
+}
+
+
+/* === MENÚ SUPERIOR === */
+nav {
+    background-color: #007acc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 15px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 25px;
+    font-weight: bold;
+    font-size: 1.1em;
+    position: relative;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #cfeeff;
+}
+
+/* === HEADER === */
+header {
+    background-color: #00a2ff;
+    color: white;
+    text-align: center;
+    padding: 50px 20px;
+}
+
+header img {
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+header h1 {
+    font-size: 2.3em;
+}
+
+header p {
+    font-size: 1.1em;
+    margin-top: 10px;
+    opacity: 0.9;
+}
+
+/* --- CONTENEDOR PRINCIPAL --- */
+.contenedor {
+    padding: 30px;
+}
+
+/* --- PROGRESO GENERAL --- */
+.progreso h2 {
+    text-align: center;
+    color: #388e3c;
+}
+
+.indicadores {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.indicador {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 280px;
+    text-align: center;
+}
+
+.barra {
+    background-color: #ddd;
+    border-radius: 10px;
+    height: 15px;
+    margin: 10px 0;
+    overflow: hidden;
+}
+
+.relleno {
+    height: 100%;
+    background-color: #4CAF50;
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+/* --- GRAFICAS --- */
+.graficas {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.graficas h2 {
+    color: #388e3c;
+    margin-bottom: 20px;
+}
+
+.contenedor-graficas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+}
+
+canvas {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: 400px;
+    height: 300px;
+}
+
+/* --- FOOTER --- */
+footer {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    margin-top: 40px;
+}
+
+/* --- RESPONSIVO --- */
+@media (max-width: 768px) {
+    .indicadores {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .contenedor-graficas {
+        flex-direction: column;
+    }
+
+    canvas {
+        width: 90%;
+    }
+}
+
+/* ======== Pie de página ======== */
+footer {
+    background-color: #007acc;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    margin-top: 30px;
+}

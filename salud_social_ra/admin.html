@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Salud Social</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .container-admin {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #007acc 0%, #00a2ff 100%);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .controles {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #007acc;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #005f99;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 122, 204, 0.3);
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 5px solid #007acc;
+        }
+
+        .stat-card h3 {
+            color: #999;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .numero {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #007acc;
+        }
+
+        .tabla-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .tabla-header {
+            background-color: #007acc;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tabla-header h2 {
+            font-size: 1.5em;
+        }
+
+        .buscador {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 250px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #f9f9f9;
+            padding: 15px;
+            text-align: left;
+            border-bottom: 2px solid #ddd;
+            font-weight: bold;
+            color: #007acc;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .acciones {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.85em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-small-view {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .btn-small-view:hover {
+            background-color: #138496;
+        }
+
+        .btn-small-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-small-delete:hover {
+            background-color: #c82333;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .close-modal {
+            color: #999;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-modal:hover {
+            color: #333;
+        }
+
+        .detalle-usuario {
+            margin: 20px 0;
+        }
+
+        .detalle-usuario h3 {
+            color: #007acc;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #007acc;
+            padding-bottom: 10px;
+        }
+
+        .detalle-usuario p {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        .detalle-usuario strong {
+            color: #333;
+        }
+
+        .estado {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+
+        .estado-activo {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .estado-inactivo {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .exportar-container {
+            margin-top: 20px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .tab-button {
+            padding: 12px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            color: #999;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-button.activo {
+            color: #007acc;
+            border-bottom-color: #007acc;
+        }
+
+        .tab-button:hover {
+            color: #007acc;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.activo {
+            display: block;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .notificacion {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .notificacion.exito {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+            display: block;
+        }
+
+        .notificacion.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+            display: block;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .controles {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-admin">
+        <header>
+            <h1>🔐 Panel de Administración</h1>
+            <p>Gestiona usuarios y supervisa la actividad de Salud Social</p>
+        </header>
+
+        <div class="notificacion" id="notificacion"></div>
+
+        <div class="controles">
+            <button class="btn btn-primary" onclick="exportarDatos()">📥 Exportar Datos (JSON)</button>
+            <button class="btn btn-success" onclick="importarDatos()">📤 Importar Datos</button>
+            <button class="btn btn-info" onclick="limpiarConsola()">🧹 Limpiar Consola</button>
+            <button class="btn btn-danger" onclick="confirmarResetear()">⚠️ Resetear Todo</button>
+            <button class="btn btn-primary" onclick="window.location.href='index.html'">← Volver al Inicio</button>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="stats" id="estadisticas"></div>
+
+        <!-- Tabs -->
+        <div class="tab-buttons">
+            <button class="tab-button activo" onclick="cambiarTab('usuarios')">👥 Usuarios</button>
+            <button class="tab-button" onclick="cambiarTab('habitos')">🏃 Hábitos Registrados</button>
+            <button class="tab-button" onclick="cambiarTab('recordatorios')">⏰ Recordatorios</button>
+            <button class="tab-button" onclick="cambiarTab('publicaciones')">💬 Publicaciones</button>
+            <button class="tab-button" onclick="cambiarTab('metas')">🎯 Metas</button>
+        </div>
+
+        <!-- Tab Usuarios -->
+        <div id="usuarios" class="tab-content activo">
+            <div class="tabla-container">
+                <div class="tabla-header">
+                    <h2>Todos los Usuarios</h2>
+                    <input type="text" class="buscador" id="buscadorUsuarios" placeholder="Buscar usuario..." onkeyup="filtrarTabla('usuarios', this.value)">
+                </div>
+                <table id="tablaUsuarios">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Fecha Registro</th>
+                            <th>Registros</th>
+                            <th>Metas</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bodyUsuarios"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab Hábitos -->
+        <div id="habitos" class="tab-content">
+            <div class="tabla-container">
+                <div class="tabla-header">
+                    <h2>Hábitos Registrados</h2>
+                    <input type="text" class="buscador" id="buscadorHabitos" placeholder="Buscar usuario..." onkeyup="filtrarTabla('habitos', this.value)">
+                </div>
+                <table id="tablaHabitos">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Fecha</th>
+                            <th>Ejercicio</th>
+                            <th>Agua</th>
+                            <th>Sueño</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bodyHabitos"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab Recordatorios -->
+        <div id="recordatorios" class="tab-content">
+            <div class="tabla-container">
+                <div class="tabla-header">
+                    <h2>Recordatorios Activos</h2>
+                    <input type="text" class="buscador" id="buscadorRecordatorios" placeholder="Buscar usuario..." onkeyup="filtrarTabla('recordatorios', this.value)">
+                </div>
+                <table id="tablaRecordatorios">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Hora</th>
+                            <th>Nota</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bodyRecordatorios"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab Publicaciones -->
+        <div id="publicaciones" class="tab-content">
+            <div class="tabla-container">
+                <div class="tabla-header">
+                    <h2>Publicaciones Comunitarias</h2>
+                    <input type="text" class="buscador" id="buscadorPublicaciones" placeholder="Buscar usuario..." onkeyup="filtrarTabla('publicaciones', this.value)">
+                </div>
+                <table id="tablaPublicaciones">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Contenido</th>
+                            <th>Fecha</th>
+                            <th>Likes</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bodyPublicaciones"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab Metas -->
+        <div id="metas" class="tab-content">
+            <div class="tabla-container">
+                <div class="tabla-header">
+                    <h2>Metas de Usuarios</h2>
+                    <input type="text" class="buscador" id="buscadorMetas" placeholder="Buscar usuario..." onkeyup="filtrarTabla('metas', this.value)">
+                </div>
+                <table id="tablaMetas">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Ejercicio (min)</th>
+                            <th>Agua (L)</th>
+                            <th>Sueño (h)</th>
+                            <th>Última Actualización</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bodyMetas"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para ver detalles -->
+    <div id="modalDetalles" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="cerrarModal()">&times;</span>
+            <div id="detallesContenido"></div>
+        </div>
+    </div>
+
+    <!-- Input oculto para importar -->
+    <input type="file" id="inputImportar" accept=".json" style="display: none;" onchange="procesarImportacion(event)">
+
+    <footer>
+        &copy; 2025 Salud Social - Panel de Administración
+    </footer>
+
+    <script>
+        // Cargar datos al abrir la página
+        window.addEventListener('load', function() {
+            cargarEstadisticas();
+            cargarUsuarios();
+            cargarHabitos();
+            cargarRecordatorios();
+            cargarPublicaciones();
+            cargarMetas();
+        });
+
+        function cargarEstadisticas() {
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            let totalHabitos = 0;
+            let totalRecordatorios = 0;
+            let totalPublicaciones = 0;
+            let totalMetas = 0;
+
+            usuarios.forEach(u => {
+                totalHabitos += (u.habitos || []).length;
+                totalRecordatorios += (u.recordatorios || []).length;
+                totalPublicaciones += (u.publicaciones || []).length;
+                if (u.metas && (u.metas.ejercicio || u.metas.agua || u.metas.suenio)) {
+                    totalMetas++;
+                }
+            });
+
+            const html = `
+                <div class="stat-card">
+                    <h3>Total de Usuarios</h3>
+                    <div class="numero">${usuarios.length}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Registros de Hábitos</h3>
+                    <div class="numero">${totalHabitos}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Recordatorios Activos</h3>
+                    <div class="numero">${totalRecordatorios}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Publicaciones</h3>
+                    <div class="numero">${totalPublicaciones}</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Usuarios con Metas</h3>
+                    <div class="numero">${totalMetas}</div>
+                </div>
+            `;
+
+            document.getElementById('estadisticas').innerHTML = html;
+        }
+
+        function cargarUsuarios() {
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            let html = '';
+
+            if (usuarios.length === 0) {
+                html = '<tr><td colspan="7" class="no-data">No hay usuarios registrados</td></tr>';
+            } else {
+                usuarios.forEach(u => {
+                    const fecha = new Date(u.fechaRegistro).toLocaleDateString('es-ES');
+                    const registros = (u.habitos || []).length;
+                    const tieneMetas = u.metas && (u.metas.ejercicio || u.metas.agua || u.metas.suenio) ? '✓' : '✗';
+
+                    html += `
+                        <tr>
+                            <td>${u.id}</td>
+                            <td>${u.nombre}</td>
+                            <td>${u.email}</td>
+                            <td>${fecha}</td>
+                            <td>${registros}</td>
+                            <td>${tieneMetas}</td>
+                            <td>
+                                <div class="acciones">
+                                    <button class="btn-small btn-small-view" onclick="verDetallesUsuario(${u.id})">Ver</button>
+                                    <button class="btn-small btn-small-delete" onclick="eliminarUsuario(${u.id})">Eliminar</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            document.getElementById('bodyUsuarios').innerHTML = html;
+        }
+
+        function cargarHabitos() {
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            let html = '';
+            let totalHabitos = 0;
+
+            usuarios.forEach(u => {
+                const habitos = u.habitos || [];
+                habitos.forEach(h => {
+                    totalHabitos++;
+                    const fecha = new Date(h.fecha).toLocaleDateString('es-ES');
+                    html += `
+                        <tr>
+                            <td>${u.nombre}</td>
+                            <td>${fecha}</td>
+                            <td>${h.ejercicio || '-'}</td>
+                            <td>${h.agua || '-'}</td>
+                            <td>${h.sueno || '-'}</td>
+                            <td>
+                                <button class="btn-small btn-small-view" onclick="verDetallesHabito('${u.nombre}', ${h.id})">Ver</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            });
+
+            if (totalHabitos === 0) {
+                html = '<tr><td colspan="6" class="no-data">No hay hábitos registrados</td></tr>';
+            }
+
+            document.getElementById('bodyHabitos').innerHTML = html;
+        }
+
+        function cargarRecordatorios() {
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            let html = '';
+            let totalRecordatorios = 0;
+
+            usuarios.forEach(u => {
+                const recordatorios = u.recordatorios || [];
+                recordatorios.forEach(r => {
+                    totalRecordatorios++;
+                    html += `
+                        <tr>
+                            <td>${u.nombre}</td>
+                            <td>${r.nombre}</td>
+                            <td>${r.tipo}</td>
+                            <td>${r.hora}</td>
+                            <td>${r.nota || '-'}</td>
+                            <td>
+                                <button class="btn-small btn-small-delete" onclick="eliminarRecordatorio(${u.id}, ${r.id})">Eliminar</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            });
+
+            if (totalRecordatorios === 0) {
+                html = '<tr><td colspan="6" class="no-data">No hay recordatorios registrados</td></tr>';
+            }
+
+            document.getElementById('bodyRecordatorios').innerHTML = html;
+        }
+
+        function cargarPublicaciones() {
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            let html = '';
+            let totalPublicaciones = 0;
+
+            usuarios.forEach(u => {
+                const publicaciones = u.publicaciones || [];
+                publicaciones.forEach(p => {
+                    totalPublicaciones++;
+                    const fecha = new Date(p.fecha).toLocaleDateString('es-ES');
+                    const texto = p.texto.substring(0, 50) + (p.texto.length > 50 ? '...' : '');
+                    const likes = (p.likes || []).length;
+
+                    html += `
+                        <tr>
+                            <td>${u.nombre}</td>
+                            <td>${texto}</td>
+                            <td>${fecha}</td>
+                            <td>${likes}</td>
+                            <td>
+                                <button class="btn-small btn-small-view" onclick="verDetallesPublicacion('${u.nombre}', ${p.id})">Ver</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            });
+
+            if (totalPublicaciones === 0) {
+                html = '<tr><td colspan="5" class="no-data">No hay publicaciones registradas</td></tr>';
+            }
+
+            document.getElementById('bodyPublicaciones').innerHTML = html;
+        }
+
+        function cargarMetas() {
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            let html = '';
+
+            usuarios.forEach(u => {
+                if (u.metas && (u.metas.ejercicio || u.metas.agua || u.metas.suenio)) {
+                    const fecha = u.metas.fecha ? new Date(u.metas.fecha).toLocaleDateString('es-ES') : 'No definida';
+
+                    html += `
+                        <tr>
+                            <td>${u.nombre}</td>
+                            <td>${u.metas.ejercicio || '-'}</td>
+                            <td>${u.metas.agua || '-'}</td>
+                            <td>${u.metas.suenio || '-'}</td>
+                            <td>${fecha}</td>
+                            <td>
+                                <button class="btn-small btn-small-view" onclick="verDetallesMetas('${u.nombre}')">Ver</button>
+                            </td>
+                        </tr>
+                    `;
+                }
+            });
+
+            if (html === '') {
+                html = '<tr><td colspan="6" class="no-data">No hay metas registradas</td></tr>';
+            }
+
+            document.getElementById('bodyMetas').innerHTML = html;
+        }
+
+        function verDetallesUsuario(usuarioId) {
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const usuario = usuarios.find(u => u.id === usuarioId);
+
+            if (!usuario) return;
+
+            const registro = new Date(usuario.fechaRegistro).toLocaleString('es-ES');
+            const habitos = (usuario.habitos || []).length;
+            const recordatorios = (usuario.recordatorios || []).length;
+            const publicaciones = (usuario.publicaciones || []).length;
+
+            const html = `
+                <h2>Detalles del Usuario: ${usuario.nombre}</h2>
+                
+                <div class="detalle-usuario">
+                    <h3>Información Personal</h3>
+                    <p><strong>ID:</strong> ${usuario.id}</p>
+                    <p><strong>Nombre:</strong> ${usuario.nombre}</p>
+                    <p><strong>Email:</strong> ${usuario.email}</p>
+                    <p><strong>Edad:</strong> ${usuario.edad || 'No definida'}</p>
+                    <p><strong>Ciudad:</strong> ${usuario.ciudad || 'No definida'}</p>
+                    <p><strong>Teléfono:</strong> ${usuario.telefono || 'No definido'}</p>
+                    <p><strong>Fecha de Registro:</strong> ${registro}</p>
+                </div>
+
+                <div class="detalle-usuario">
+                    <h3>Metas</h3>
+                    <p><strong>Ejercicio:</strong> ${usuario.metas?.ejercicio || 'No definida'} minutos</p>
+                    <p><strong>Agua:</strong> ${usuario.metas?.agua || 'No definida'} litros</p>
+                    <p><strong>Sueño:</strong> ${usuario.metas?.suenio || 'No definida'} horas</p>
+                </div>
+
+                <div class="detalle-usuario">
+                    <h3>Actividad</h3>
+                    <p><strong>Registros de Hábitos:</strong> ${habitos}</p>
+                    <p><strong>Recordatorios:</strong> ${recordatorios}</p>
+                    <p><strong>Publicaciones:</strong> ${publicaciones}</p>
+                </div>
+
+                <div class="detalle-usuario">
+                    <h3>Intereses</h3>
+                    <p>${usuario.intereses || 'No definidos'}</p>
+                </div>
+            `;
+
+            document.getElementById('detallesContenido').innerHTML = html;
+            document.getElementById('modalDetalles').style.display = 'block';
+        }
+
+        function verDetallesHabito(nombreUsuario, habitoId) {
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const usuario = usuarios.find(u => u.nombre === nombreUsuario);
+            if (!usuario) return;
+
+            const habito = (usuario.habitos || []).find(h => h.id === habitoId);
+            if (!habito) return;
+
+            const fecha = new Date(habito.fecha).toLocaleString('es-ES');
+
+            const html = `
+                <h2>Detalle del Hábito - ${nombreUsuario}</h2>
+                <div class="detalle-usuario">
+                    <p><strong>Fecha:</strong> ${fecha}</p>
+                    <p><strong>Alimentación:</strong> ${habito.alimentacion || 'No registrada'}</p>
+                    <p><strong>Ejercicio:</strong> ${habito.ejercicio || 'No registrado'}</p>
+                    <p><strong>Agua:</strong> ${habito.agua || 'No registrada'}</p>
+                    <p><strong>Sueño:</strong> ${habito.sueno || 'No registrado'} horas</p>
+                </div>
+            `;
+
+            document.getElementById('detallesContenido').innerHTML = html;
+            document.getElementById('modalDetalles').style.display = 'block';
+        }
+
+        function verDetallesPublicacion(nombreUsuario, publicacionId) {
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const usuario = usuarios.find(u => u.nombre === nombreUsuario);
+            if (!usuario) return;
+
+            const pub = (usuario.publicaciones || []).find(p => p.id === publicacionId);
+            if (!pub) return;
+
+            const fecha = new Date(pub.fecha).toLocaleString('es-ES');
+            const likes = (pub.likes || []).length;
+
+            const html = `
+                <h2>Publicación - ${nombreUsuario}</h2>
+                <div class="detalle-usuario">
+                    <p><strong>Fecha:</strong> ${fecha}</p>
+                    <p><strong>Contenido:</strong> ${pub.texto}</p>
+                    <p><strong>Me gusta:</strong> ${likes}</p>
+                </div>
+            `;
+
+            document.getElementById('detallesContenido').innerHTML = html;
+            document.getElementById('modalDetalles').style.display = 'block';
+        }
+
+        function verDetallesMetas(nombreUsuario) {
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const usuario = usuarios.find(u => u.nombre === nombreUsuario);
+            if (!usuario || !usuario.metas) return;
+
+            const fecha = usuario.metas.fecha ? new Date(usuario.metas.fecha).toLocaleString('es-ES') : 'No definida';
+
+            const html = `
+                <h2>Metas - ${nombreUsuario}</h2>
+                <div class="detalle-usuario">
+                    <p><strong>Ejercicio:</strong> ${usuario.metas.ejercicio || 'No definida'} minutos por día</p>
+                    <p><strong>Agua:</strong> ${usuario.metas.agua || 'No definida'} litros por día</p>
+                    <p><strong>Sueño:</strong> ${usuario.metas.suenio || 'No definida'} horas por noche</p>
+                    <p><strong>Última actualización:</strong> ${fecha}</p>
+                </div>
+            `;
+
+            document.getElementById('detallesContenido').innerHTML = html;
+            document.getElementById('modalDetalles').style.display = 'block';
+        }
+
+        function cerrarModal() {
+            document.getElementById('modalDetalles').style.display = 'none';
+        }
+
+        function eliminarUsuario(usuarioId) {
+            if (confirm('⚠️ ¿Estás seguro de que deseas eliminar este usuario? Se eliminarán todos sus datos.')) {
+                const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+                const usuarioAEliminar = usuarios.find(u => u.id === usuarioId);
+                const usuariosFiltered = usuarios.filter(u => u.id !== usuarioId);
+
+                localStorage.setItem('usuarios', JSON.stringify(usuariosFiltered));
+                mostrarNotificacion(`Usuario "${usuarioAEliminar.nombre}" eliminado correctamente`, 'exito');
+                cargarEstadisticas();
+                cargarUsuarios();
+            }
+        }
+
+        function eliminarRecordatorio(usuarioId, recordatorioId) {
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const usuario = usuarios.find(u => u.id === usuarioId);
+
+            if (usuario) {
+                usuario.recordatorios = (usuario.recordatorios || []).filter(r => r.id !== recordatorioId);
+                localStorage.setItem('usuarios', JSON.stringify(usuarios));
+                mostrarNotificacion('Recordatorio eliminado', 'exito');
+                cargarRecordatorios();
+            }
+        }
+
+        function cambiarTab(tabName) {
+            // Ocultar todos los tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('activo');
+            });
+
+            // Desactivar todos los botones
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('activo');
+            });
+
+            // Mostrar tab seleccionado
+            document.getElementById(tabName).classList.add('activo');
+            event.target.classList.add('activo');
+        }
+
+        function filtrarTabla(tabName, busqueda) {
+            const bodyId = 'body' + tabName.charAt(0).toUpperCase() + tabName.slice(1);
+            const tbody = document.getElementById(bodyId);
+            const filas = tbody.querySelectorAll('tr');
+
+            filas.forEach(fila => {
+                const texto = fila.textContent.toLowerCase();
+                if (texto.includes(busqueda.toLowerCase())) {
+                    fila.style.display = '';
+                } else {
+                    fila.style.display = 'none';
+                }
+            });
+        }
+
+        function exportarDatos() {
+            const datos = {
+                usuarios: JSON.parse(localStorage.getItem('usuarios')) || [],
+                fechaExportacion: new Date().toLocaleString('es-ES'),
+                version: '1.0'
+            };
+
+            const jsonString = JSON.stringify(datos, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `salud-social-backup-${new Date().getTime()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            mostrarNotificacion('Datos exportados correctamente', 'exito');
+        }
+
+        function importarDatos() {
+            document.getElementById('inputImportar').click();
+        }
+
+        function procesarImportacion(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const datos = JSON.parse(e.target.result);
+                    localStorage.setItem('usuarios', JSON.stringify(datos.usuarios));
+                    mostrarNotificacion('Datos importados correctamente', 'exito');
+                    cargarEstadisticas();
+                    cargarUsuarios();
+                    cargarHabitos();
+                    cargarRecordatorios();
+                    cargarPublicaciones();
+                    cargarMetas();
+                } catch (error) {
+                    mostrarNotificacion('Error al importar datos: ' + error.message, 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function limpiarConsola() {
+            if (confirm('¿Deseas limpiar la consola?')) {
+                console.clear();
+                mostrarNotificacion('Consola limpiada', 'exito');
+            }
+        }
+
+        function confirmarResetear() {
+            if (confirm('⚠️ ¡ADVERTENCIA! Esto eliminará TODOS los datos. ¿Estás completamente seguro?')) {
+                if (confirm('Última confirmación: ¿Deseas eliminar todo?')) {
+                    localStorage.removeItem('usuarios');
+                    localStorage.removeItem('sesionActual');
+                    mostrarNotificacion('Todos los datos han sido eliminados', 'exito');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                }
+            }
+        }
+
+        function mostrarNotificacion(mensaje, tipo) {
+            const notif = document.getElementById('notificacion');
+            notif.className = 'notificacion ' + tipo;
+            notif.textContent = mensaje;
+
+            setTimeout(() => {
+                notif.className = 'notificacion';
+            }, 3000);
+        }
+
+        // Cerrar modal al hacer click fuera
+        window.onclick = function(event) {
+            const modal = document.getElementById('modalDetalles');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

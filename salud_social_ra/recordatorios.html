@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recordatorios - Salud Social</title>
+    <!--Hoja de estilo-->
+    <link rel="stylesheet" href="estilos/recordatorios.css">
+</head>
+
+<body>
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="iniciar_sesion.html">Iniciar Sesión</a>
+    </nav>
+
+    <header>
+        <img src="imagenes/logoSALUDSOCIAL.png" alt="Logo Salud Social">
+        <h1>Recordatorios inteligentes</h1>
+        <p>Porque la vida es mas sabrosa sin enfermedades.</p>
+    </header>
+
+    <main class="contenedor">
+        <section class="formulario">
+            <h2>Agregar nuevo recordatorio</h2>
+            <form id="formRecordatorio" onsubmit="agregarRecordatorio(event)">
+                <label>Nombre del recordatorio:</label>
+                <input type="text" id="nombre" required placeholder="Ej. Tomar agua">
+
+                <label>Tipo:</label>
+                <select id="tipo" required>
+                    <option value="Medicamento">💊 Medicamento</option>
+                    <option value="Alimentación">🥗 Alimentación</option>
+                    <option value="Agua">💧 Agua</option>
+                    <option value="Ejercicio">🚶 Ejercicio</option>
+                    <option value="Cita médica">🩺 Cita médica</option>
+                </select>
+
+                <label>Hora:</label>
+                <input type="time" id="hora" required>
+
+                <label>Nota (opcional):</label>
+                <textarea id="nota" placeholder="Detalles adicionales..."></textarea>
+
+                <button type="submit">Agregar recordatorio</button>
+            </form>
+        </section>
+
+        <section class="lista">
+            <h2>Mis recordatorios</h2>
+            <ul id="listaRecordatorios"></ul>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2025 Salud Social - Todos los derechos reservados.
+    </footer>
+
+    <script src="js/auth.js"></script>
+    <script>
+        // Verificar autenticación
+        window.addEventListener('load', function() {
+            verificarAutenticacion();
+            crearNavegacionCompleta();
+            mostrarRecordatorios();
+        });
+
+        function agregarRecordatorio(event) {
+            event.preventDefault();
+
+            const usuarioActual = obtenerUsuarioActual();
+            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const usuarioIndex = usuarios.findIndex(u => u.id === usuarioActual.usuarioId);
+
+            if (usuarioIndex === -1) return;
+
+            const nombre = document.getElementById("nombre").value;
+            const tipo = document.getElementById("tipo").value;
+            const hora = document.getElementById("hora").value;
+            const nota = document.getElementById("nota").value;
+
+            if (!usuarios[usuarioIndex].recordatorios) {
+                usuarios[usuarioIndex].recordatorios = [];
+            }
+
+            const nuevo = { 
+                id: Date.now(), 
+                nombre, 
+                tipo, 
+                hora, 
+                nota,
+                fecha: new Date().toISOString()
+            };
+
+            usuarios[usuarioIndex].recordatorios.push(nuevo);
+            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+            document.getElementById('formRecordatorio').reset();
+            mostrarRecordatorios();
+        }
+
+        function mostrarRecordatorios() {
+            const usuarioActual = obtenerUsuarioActual();
+            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const usuario = usuarios.find(u => u.id === usuarioActual.usuarioId);
+
+            const lista = document.getElementById("listaRecordatorios");
+            lista.innerHTML = "";
+
+            if (!usuario || !usuario.recordatorios || usuario.recordatorios.length === 0) {
+                lista.innerHTML = "<p style='text-align: center; color: #999;'>No hay recordatorios aún.</p>";
+                return;
+            }
+
+            // Ordenar por hora
+            usuario.recordatorios.sort((a, b) => a.hora.localeCompare(b.hora));
+
+            usuario.recordatorios.forEach(rec => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <div style="flex: 1;">
+                        <strong>${rec.nombre}</strong> (${rec.tipo})<br>
+                        🕒 ${rec.hora}<br>
+                        ${rec.nota ? `📝 ${rec.nota}<br>` : ""}
+                    </div>
+                    <button onclick="eliminarRecordatorio(${rec.id})" style="background-color: #dc3545;">Eliminar</button>
+                `;
+                li.style.display = 'flex';
+                li.style.justifyContent = 'space-between';
+                li.style.alignItems = 'center';
+                li.style.gap = '10px';
+                lista.appendChild(li);
+            });
+        }
+
+        function eliminarRecordatorio(id) {
+            const usuarioActual = obtenerUsuarioActual();
+            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            const usuarioIndex = usuarios.findIndex(u => u.id === usuarioActual.usuarioId);
+
+            if (usuarioIndex !== -1) {
+                usuarios[usuarioIndex].recordatorios = usuarios[usuarioIndex].recordatorios.filter(rec => rec.id !== id);
+                localStorage.setItem('usuarios', JSON.stringify(usuarios));
+                mostrarRecordatorios();
+            }
+        }
+    </script>
+
+</body>
+
+</html>
